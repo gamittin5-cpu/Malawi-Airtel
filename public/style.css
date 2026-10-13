@@ -26,70 +26,66 @@ body {
   padding: 20px 0;
 }
 
-/* Medium Application Page Width */
+/* Medium Application Container */
 .app-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 580px;
   background-color: var(--card-bg);
   min-height: 85vh;
   position: relative;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-/* Header */
+/* Top Header */
 .top-header {
-  background: linear-gradient(135deg, var(--airtel-red) 0%, var(--airtel-dark-red) 100%);
+  background: var(--airtel-red);
   color: #FFFFFF;
-  padding: 20px 24px;
+  padding: 16px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.brand-logo {
+.header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+}
+
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: #FFFFFF;
+  margin: 4px 0;
 }
 
 .brand-title {
   font-size: 22px;
   font-weight: 800;
-  letter-spacing: -0.5px;
 }
 
-.flag-badge {
-  font-size: 24px;
+.brand-title small {
+  font-size: 14px;
+  font-weight: 400;
 }
 
-/* Step Indicator Bar */
-.step-indicator-bar {
+.header-right {
   display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-
-.step-pill {
-  flex: 1;
-  height: 6px;
-  background-color: #E5E5EA;
-  border-radius: 3px;
-  transition: background-color 0.3s ease;
-}
-
-.step-pill.active {
-  background-color: var(--airtel-red);
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 /* Screens */
 .screen {
   display: none;
-  padding: 28px;
+  padding: 24px;
   flex-direction: column;
   flex: 1;
 }
@@ -98,54 +94,244 @@ body {
   display: flex;
 }
 
-/* Notice Box */
-.notice-box {
-  border: 2px solid var(--airtel-red);
-  border-radius: 16px;
-  padding: 24px;
-  background-color: #FFF5F5;
-  margin: 20px 0;
-  text-align: center;
+/* Welcome Banner */
+.welcome-banner {
+  margin-bottom: 18px;
 }
 
-.notice-box h2 {
+.welcome-banner h1 {
+  font-size: 26px;
+  color: #1C1C1E;
+}
+
+.welcome-banner h1 span {
   color: var(--airtel-red);
-  font-size: 22px;
-  margin-bottom: 12px;
 }
 
-.notice-box p {
-  color: var(--text-main);
-  font-size: 15px;
-  line-height: 1.6;
+.welcome-banner p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* Sliders Overview Card */
+.overview-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 16px;
+  color: #1C1C1E;
   margin-bottom: 16px;
 }
 
-.warning-callout {
+.slider-group {
+  margin-bottom: 18px;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.slider-val {
+  font-weight: 800;
+}
+
+#balance-val { color: var(--accent-green); }
+#airtime-val { color: var(--airtel-red); }
+
+.range-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  outline: none;
+  -webkit-appearance: none;
+  background: #E5E5EA;
+}
+
+.green-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.red-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--airtel-red);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.slider-limits {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* Account Info Box */
+.account-box {
+  background-color: #FFF5F5;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 15px;
+}
+
+.phone-icon-circle {
+  width: 40px;
+  height: 40px;
   background-color: var(--airtel-red);
   color: #FFFFFF;
-  padding: 14px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
 }
 
-/* WhatsApp Red Notice Box */
-.whatsapp-notice {
-  background-color: #FFE6E6;
-  border: 2px solid var(--airtel-red);
-  border-radius: 12px;
-  padding: 18px;
-  margin-bottom: 24px;
-  text-align: center;
+.account-info {
+  display: flex;
+  flex-direction: column;
 }
 
-.whatsapp-notice p {
-  color: var(--airtel-red);
+.account-title {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.account-amount {
+  font-size: 20px;
   font-weight: 800;
-  font-size: 15px;
-  line-height: 1.5;
-  text-transform: uppercase;
+  color: var(--airtel-red);
+}
+
+/* Quick Actions Icons Grid */
+.quick-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+}
+
+.action-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.action-icon {
+  width: 44px;
+  height: 44px;
+  background: #FFE6E6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.action-item span {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.action-item small {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Login Screen Styles (Image 1000052923) */
+.login-header {
+  background: var(--airtel-red);
+  color: #FFFFFF;
+  padding: 30px 20px;
+  border-radius: 0 0 24px 24px;
+  text-align: center;
+  margin: -24px -24px 24px -24px;
+}
+
+.airtel-circle-logo {
+  width: 50px;
+  height: 50px;
+  background-color: #FFFFFF;
+  color: var(--airtel-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  margin: 0 auto 10px;
+}
+
+.phone-input-wrapper {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #FAFAFA;
+}
+
+.flag-prefix {
+  background-color: #EFEFEF;
+  padding: 14px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-right: 1px solid var(--border-color);
+}
+
+.phone-field {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.pin-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.eye-icon {
+  font-size: 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.forgot-pin {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
 }
 
 /* Buttons */
@@ -159,16 +345,28 @@ body {
   font-weight: 700;
   cursor: pointer;
   width: 100%;
-  margin-top: 20px;
-  transition: background 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
 }
 
-.btn-primary:active {
-  background-color: var(--airtel-dark-red);
+.btn-large {
+  padding: 18px;
+  font-size: 18px;
+  border-radius: 14px;
+}
+
+.arrow-circle {
+  width: 28px;
+  height: 28px;
+  background-color: #FFFFFF;
+  color: var(--airtel-red);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
 }
 
 .btn-secondary {
@@ -192,11 +390,10 @@ body {
   display: block;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-main);
   margin-bottom: 8px;
 }
 
-.input-field, select {
+.input-field {
   width: 100%;
   padding: 14px 16px;
   border: 1px solid var(--border-color);
@@ -206,24 +403,18 @@ body {
   background-color: #FAFAFA;
 }
 
-.input-field:focus, select:focus {
-  border-color: var(--airtel-red);
-  background-color: #FFFFFF;
-}
-
-/* Digit PIN/OTP Grid */
+/* PIN/OTP Grids */
 .pin-grid {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
-  margin: 15px 0;
 }
 
 .pin-digit, .otp-digit {
-  width: 52px;
-  height: 56px;
+  width: 48px;
+  height: 52px;
   text-align: center;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   border: 2px solid var(--border-color);
   border-radius: 10px;
@@ -236,12 +427,28 @@ body {
   background-color: #FFFFFF;
 }
 
+/* WhatsApp Notice Box */
+.whatsapp-notice {
+  background-color: #FFE6E6;
+  border: 2px solid var(--airtel-red);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.whatsapp-notice p {
+  color: var(--airtel-red);
+  font-weight: 800;
+  font-size: 14px;
+}
+
 /* Summary Card */
 .summary-card {
   background-color: #FAFAFA;
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 20px;
+  padding: 18px;
   margin-bottom: 20px;
 }
 
@@ -250,20 +457,30 @@ body {
   justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px dashed var(--border-color);
-  font-size: 15px;
+  font-size: 14px;
 }
 
-.summary-row:last-child {
-  border-bottom: none;
+.summary-row:last-child { border-bottom: none; }
+
+.summary-label { color: var(--text-muted); }
+.summary-val { font-weight: 700; }
+
+.approved-card {
+  background-color: var(--airtel-red);
+  color: #FFFFFF;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin: 20px 0;
 }
 
-.summary-label {
-  color: var(--text-muted);
-}
-
-.summary-val {
-  font-weight: 700;
-  color: var(--text-main);
+.success-checkmark {
+  width: 64px; height: 64px;
+  background-color: #E6F4EA;
+  color: var(--accent-green);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin: 0 auto 12px;
 }
 
 /* Overlay Loader */
@@ -281,18 +498,15 @@ body {
   padding: 24px;
 }
 
-.loading-overlay.active {
-  display: flex;
-}
+.loading-overlay.active { display: flex; }
 
 .spinner {
-  width: 48px;
-  height: 48px;
+  width: 44px; height: 44px;
   border: 4px solid #EFEFEF;
   border-top: 4px solid var(--airtel-red);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 @keyframes spin {
@@ -302,8 +516,7 @@ body {
 
 .error-text {
   color: var(--airtel-red);
-  font-size: 13px;
+  font-size: 12px;
   margin-top: 6px;
   display: none;
-  }
-  
+}
